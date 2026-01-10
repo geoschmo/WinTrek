@@ -1,0 +1,275 @@
+<Window x:Class="WinTrek.UI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:WinTrek.UI.ViewModels"
+        mc:Ignorable="d"
+        Title="WinTrek" Height="700" Width="1000"
+        Background="#1a1a2e">
+
+    <Window.DataContext>
+        <vm:MainViewModel />
+    </Window.DataContext>
+
+    <Window.Resources>
+        <!-- Dark theme colors -->
+        <SolidColorBrush x:Key="PanelBackground" Color="#16213e"/>
+        <SolidColorBrush x:Key="PanelBorder" Color="#0f3460"/>
+        <SolidColorBrush x:Key="TextColor" Color="#e8e8e8"/>
+        <SolidColorBrush x:Key="AccentColor" Color="#e94560"/>
+        <SolidColorBrush x:Key="GreenAlert" Color="#00ff00"/>
+        <SolidColorBrush x:Key="YellowAlert" Color="#ffff00"/>
+        <SolidColorBrush x:Key="RedAlert" Color="#ff0000"/>
+
+        <!-- GroupBox Style -->
+        <Style TargetType="GroupBox">
+            <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource PanelBorder}"/>
+            <Setter Property="Background" Value="{StaticResource PanelBackground}"/>
+            <Setter Property="Margin" Value="3"/>
+            <Setter Property="Padding" Value="5"/>
+        </Style>
+
+        <!-- Button Style -->
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource PanelBorder}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="BorderBrush" Value="{StaticResource AccentColor}"/>
+        </Style>
+
+        <!-- TextBox Style -->
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="#0a0a15"/>
+            <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource PanelBorder}"/>
+            <Setter Property="Padding" Value="3"/>
+            <Setter Property="Margin" Value="2"/>
+        </Style>
+
+        <!-- Label Style -->
+        <Style TargetType="Label">
+            <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+        </Style>
+
+        <!-- TextBlock Style -->
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Menu Bar -->
+        <Menu Grid.Row="0" Background="{StaticResource PanelBackground}">
+            <MenuItem Header="_Game" Foreground="{StaticResource TextColor}">
+                <MenuItem Header="_New Game" Command="{Binding NewGameCommand}"/>
+                <Separator/>
+                <MenuItem Header="E_xit" Click="ExitMenuItem_Click"/>
+            </MenuItem>
+        </Menu>
+
+        <!-- Main Content -->
+        <Grid Grid.Row="1" Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="280"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Left Panel: Status & Controls -->
+            <StackPanel Grid.Column="0">
+
+                <!-- Ship Status -->
+                <GroupBox Header="Ship Status">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Label Grid.Row="0" Content="Region:"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding QuadrantName}" VerticalAlignment="Center"/>
+
+                        <Label Grid.Row="1" Content="Quadrant:"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding QuadrantPosition}" VerticalAlignment="Center"/>
+
+                        <Label Grid.Row="2" Content="Sector:"/>
+                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding SectorPosition}" VerticalAlignment="Center"/>
+
+                        <Label Grid.Row="3" Content="Stardate:"/>
+                        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Stardate}" VerticalAlignment="Center"/>
+
+                        <Label Grid.Row="4" Content="Time Left:"/>
+                        <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding TimeRemaining}" VerticalAlignment="Center"/>
+
+                        <Label Grid.Row="5" Content="Condition:"/>
+                        <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding Condition}" VerticalAlignment="Center" FontWeight="Bold"/>
+
+                        <Label Grid.Row="6" Content="Energy:"/>
+                        <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding Energy}" VerticalAlignment="Center"/>
+
+                        <Label Grid.Row="7" Content="Shields:"/>
+                        <TextBlock Grid.Row="7" Grid.Column="1" Text="{Binding ShieldLevel}" VerticalAlignment="Center"/>
+
+                        <Label Grid.Row="8" Content="Torpedoes:"/>
+                        <TextBlock Grid.Row="8" Grid.Column="1" Text="{Binding PhotonTorpedoes}" VerticalAlignment="Center"/>
+
+                        <Label Grid.Row="9" Content="Docked:"/>
+                        <TextBlock Grid.Row="9" Grid.Column="1" Text="{Binding IsDocked}" VerticalAlignment="Center"/>
+                    </Grid>
+                </GroupBox>
+
+                <!-- Mission Status -->
+                <GroupBox Header="Mission Status">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Klingons:"/>
+                            <TextBlock Text="{Binding TotalKlingons}" VerticalAlignment="Center" Foreground="{StaticResource RedAlert}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Starbases:"/>
+                            <TextBlock Text="{Binding TotalStarbases}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- Navigation -->
+                <GroupBox Header="Navigation">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Direction (1-9):"/>
+                            <TextBox Text="{Binding NavigationDirection}" Width="50"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Warp (0.1-8):"/>
+                            <TextBox Text="{Binding NavigationWarpFactor}" Width="50"/>
+                        </StackPanel>
+                        <Button Content="Engage" Command="{Binding NavigateCommand}"/>
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- Shields -->
+                <GroupBox Header="Shield Control">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Energy:"/>
+                            <TextBox Text="{Binding ShieldTransfer}" Width="50"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Button Content="Add" Command="{Binding AddShieldsCommand}" Width="70"/>
+                            <Button Content="Remove" Command="{Binding RemoveShieldsCommand}" Width="70"/>
+                        </StackPanel>
+                    </StackPanel>
+                </GroupBox>
+            </StackPanel>
+
+            <!-- Center Panel: Sector Grid & Messages -->
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="200"/>
+                </Grid.RowDefinitions>
+
+                <!-- Sector Display -->
+                <GroupBox Header="Short Range Scan" Grid.Row="0">
+                    <ItemsControl ItemsSource="{Binding SectorGrid}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Rows="8" Columns="8"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="{StaticResource PanelBorder}" BorderThickness="1" Background="#0a0a15">
+                                    <TextBlock Text="{Binding Symbol}"
+                                               FontFamily="Consolas"
+                                               FontSize="14"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               Foreground="{StaticResource TextColor}"/>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </GroupBox>
+
+                <!-- Communications -->
+                <GroupBox Header="Communications" Grid.Row="1">
+                    <ListBox ItemsSource="{Binding Messages}"
+                             Background="#0a0a15"
+                             BorderThickness="0">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Message}"
+                                           Foreground="{StaticResource TextColor}"
+                                           FontFamily="Consolas"
+                                           FontSize="11"
+                                           TextWrapping="Wrap"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </GroupBox>
+            </Grid>
+
+            <!-- Right Panel: Weapons & Computer -->
+            <StackPanel Grid.Column="2">
+
+                <!-- Weapons -->
+                <GroupBox Header="Tactical">
+                    <StackPanel>
+                        <TextBlock Text="Phasers" FontWeight="Bold" Margin="0,5"/>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Energy:"/>
+                            <TextBox Text="{Binding PhaserEnergy}" Width="50"/>
+                        </StackPanel>
+                        <Button Content="Fire Phasers" Command="{Binding FirePhasersCommand}"/>
+
+                        <TextBlock Text="Photon Torpedoes" FontWeight="Bold" Margin="0,10,0,5"/>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Direction:"/>
+                            <TextBox Text="{Binding TorpedoDirection}" Width="50"/>
+                        </StackPanel>
+                        <Button Content="Fire Torpedo" Command="{Binding FireTorpedoCommand}"/>
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- Sensors -->
+                <GroupBox Header="Sensors">
+                    <StackPanel>
+                        <Button Content="Short Range Scan" Command="{Binding ShortRangeScanCommand}"/>
+                        <Button Content="Long Range Scan" Command="{Binding LongRangeScanCommand}"/>
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- Computer -->
+                <GroupBox Header="Computer">
+                    <StackPanel>
+                        <Button Content="Galactic Record" Command="{Binding ViewGalacticRecordCommand}"/>
+                        <Button Content="Status Report" Command="{Binding ViewStatusReportCommand}"/>
+                        <Button Content="Torpedo Calculator" Command="{Binding CalculateTorpedoSolutionsCommand}"/>
+                    </StackPanel>
+                </GroupBox>
+
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>
