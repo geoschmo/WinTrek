@@ -1,5 +1,8 @@
 # Visual Studio
 .vs/
+
+# Claude Code
+.claude/
 *.user
 *.suo
 
