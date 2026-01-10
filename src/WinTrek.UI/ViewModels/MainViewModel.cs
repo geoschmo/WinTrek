@@ -85,7 +85,7 @@ public partial class MainViewModel : ViewModelBase
     private string _navigationDirection = "1";
 
     [ObservableProperty]
-    private string _navigationWarpFactor = "1";
+    private string _navigationWarpFactor = "1.0";
 
     [ObservableProperty]
     private string _phaserEnergy = "100";

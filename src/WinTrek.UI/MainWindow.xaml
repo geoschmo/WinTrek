@@ -144,34 +144,76 @@
                 <GroupBox Header="MISSION STATUS" Style="{DynamicResource LcarsGroupBox}">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <Label Content="KLINGONS:" Style="{DynamicResource LcarsLabel}"/>
-                            <TextBlock Text="{Binding TotalKlingons}" VerticalAlignment="Center"
-                                       Foreground="{DynamicResource LcarsRedBrush}" FontWeight="Bold" FontFamily="Consolas"/>
+                            <Label Content="KLINGONS:" Style="{DynamicResource LcarsLabel}" Width="90"/>
+                            <TextBlock Text="{Binding TotalKlingons}" VerticalAlignment="Center" Margin="10,0,0,0"
+                                       Foreground="{DynamicResource LcarsRedBrush}" FontWeight="Bold" FontFamily="Consolas" FontSize="18"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <Label Content="STARBASES:" Style="{DynamicResource LcarsLabel}"/>
-                            <TextBlock Text="{Binding TotalStarbases}" VerticalAlignment="Center"
-                                       Foreground="{DynamicResource LcarsGreenBrush}" FontFamily="Consolas"/>
+                            <Label Content="STARBASES:" Style="{DynamicResource LcarsLabel}" Width="90"/>
+                            <TextBlock Text="{Binding TotalStarbases}" VerticalAlignment="Center" Margin="10,0,0,0"
+                                       Foreground="{DynamicResource LcarsGreenBrush}" FontWeight="Bold" FontFamily="Consolas" FontSize="18"/>
                         </StackPanel>
                     </StackPanel>
                 </GroupBox>
 
                 <!-- Navigation -->
                 <GroupBox Header="NAVIGATION" Style="{DynamicResource LcarsGroupBox}">
-                    <StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="0,2">
-                            <Label Content="DIRECTION:" Style="{DynamicResource LcarsLabel}" Width="85"/>
-                            <TextBox Text="{Binding NavigationDirection}" Width="50"
-                                     Style="{DynamicResource LcarsTextBox}"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0">
+                            <StackPanel Orientation="Horizontal" Margin="0,2">
+                                <Label Content="DIRECTION:" Style="{DynamicResource LcarsLabel}" Width="85"/>
+                                <TextBox Text="{Binding NavigationDirection}" Width="50"
+                                         Style="{DynamicResource LcarsTextBox}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,2">
+                                <Label Content="WARP:" Style="{DynamicResource LcarsLabel}" Width="85"/>
+                                <TextBox Text="{Binding NavigationWarpFactor}" Width="50"
+                                         Style="{DynamicResource LcarsTextBox}"/>
+                            </StackPanel>
+                            <Button Content="ENGAGE" Command="{Binding NavigateCommand}"
+                                    Style="{DynamicResource AnimatedLcarsButton}" Margin="0,5,0,0"/>
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="0,2">
-                            <Label Content="WARP:" Style="{DynamicResource LcarsLabel}" Width="85"/>
-                            <TextBox Text="{Binding NavigationWarpFactor}" Width="50"
-                                     Style="{DynamicResource LcarsTextBox}"/>
-                        </StackPanel>
-                        <Button Content="ENGAGE" Command="{Binding NavigateCommand}"
-                                Style="{DynamicResource AnimatedLcarsButton}" Margin="0,5,0,0"/>
-                    </StackPanel>
+
+                        <!-- Direction Compass -->
+                        <Grid Grid.Column="1" Margin="10,0,5,0" VerticalAlignment="Center">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="28"/>
+                                <ColumnDefinition Width="28"/>
+                                <ColumnDefinition Width="28"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="4" FontFamily="Consolas" FontSize="16"
+                                       Foreground="{DynamicResource LcarsBeigeBrush}" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" Text="3" FontFamily="Consolas" FontSize="16"
+                                       Foreground="{DynamicResource LcarsBeigeBrush}" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Row="0" Grid.Column="2" Text="2" FontFamily="Consolas" FontSize="16"
+                                       Foreground="{DynamicResource LcarsBeigeBrush}" HorizontalAlignment="Center"/>
+
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="5" FontFamily="Consolas" FontSize="16"
+                                       Foreground="{DynamicResource LcarsBeigeBrush}" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" Text="*" FontFamily="Consolas" FontSize="16"
+                                       Foreground="{DynamicResource LcarsOrangeBrush}" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Row="1" Grid.Column="2" Text="1" FontFamily="Consolas" FontSize="16"
+                                       Foreground="{DynamicResource LcarsBeigeBrush}" HorizontalAlignment="Center"/>
+
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="6" FontFamily="Consolas" FontSize="16"
+                                       Foreground="{DynamicResource LcarsBeigeBrush}" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Row="2" Grid.Column="1" Text="7" FontFamily="Consolas" FontSize="16"
+                                       Foreground="{DynamicResource LcarsBeigeBrush}" HorizontalAlignment="Center"/>
+                            <TextBlock Grid.Row="2" Grid.Column="2" Text="8" FontFamily="Consolas" FontSize="16"
+                                       Foreground="{DynamicResource LcarsBeigeBrush}" HorizontalAlignment="Center"/>
+                        </Grid>
+                    </Grid>
                 </GroupBox>
 
                 <!-- Shields -->
@@ -184,9 +226,9 @@
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
                             <Button Content="ADD" Command="{Binding AddShieldsCommand}"
-                                    Style="{DynamicResource LcarsButton}" Width="80"/>
+                                    Style="{DynamicResource LcarsButton}" Width="100"/>
                             <Button Content="REMOVE" Command="{Binding RemoveShieldsCommand}"
-                                    Style="{DynamicResource LcarsButtonSecondary}" Width="80"/>
+                                    Style="{DynamicResource LcarsButtonSecondary}" Width="100"/>
                         </StackPanel>
                     </StackPanel>
                 </GroupBox>
