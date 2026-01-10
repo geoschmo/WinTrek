@@ -25,15 +25,20 @@ WinTrek is a Star Trek-themed space exploration game being modernized from a leg
 WinTrek/
 ├── WinTrek.sln                    # Main solution file (.NET 8)
 ├── src/
-│   └── WinTrek.Core/              # Game engine library (no UI dependencies)
-│       ├── Models/                # Domain entities
-│       ├── Services/              # Game logic services (TBD)
-│       ├── Events/                # Game events (TBD)
-│       ├── Enums/                 # SectorContent, AlertCondition, ShipSystem
-│       └── GameData.cs            # Static data (quadrant names, ASCII art)
-├── tests/
-│   └── WinTrek.Core.Tests/        # xUnit tests for game logic
-└── LegacyCode/                    # Original WinForms app (.NET Framework 4.0)
+│   ├── WinTrek.Core/              # Game engine library (no UI dependencies)
+│   │   ├── Models/                # Domain entities
+│   │   ├── Services/              # Game logic services
+│   │   ├── Events/                # Game events
+│   │   └── Enums/                 # SectorContent, AlertCondition, ShipSystem
+│   │
+│   └── WinTrek.UI/                # WPF application
+│       ├── ViewModels/            # MVVM view models
+│       ├── Views/                 # Dialog windows
+│       ├── Converters/            # Value converters
+│       └── Themes/                # LCARS styling
+│
+└── tests/
+    └── WinTrek.Core.Tests/        # xUnit tests for game logic
 ```
 
 ## Architecture
@@ -57,16 +62,10 @@ WinTrek/
 | `AlertCondition` | Green, Yellow, Red |
 | `ShipSystem` | WarpEngines, ShortRangeScanner, LongRangeScanner, ShieldControl, Computer, PhotonTorpedo, Phaser |
 
-### Game Systems (being migrated from LegacyCode/Form1.cs)
+### Game Systems
 - **Navigation**: Warp drive movement between sectors/quadrants
 - **Sensors**: Short-range and long-range scanning
 - **Weapons**: Phasers and photon torpedoes
 - **Shields**: Energy management for defense
 - **Damage**: Random equipment malfunctions and repair at starbases
 - **Computer**: Status reports and targeting calculators
-
-## Legacy Code Reference
-
-The `LegacyCode/` folder contains the original WinForms implementation:
-- `Form1.cs` - All game logic (~1400 lines) being extracted into WinTrek.Core services
-- `Form1.Designer.cs` - UI layout reference for WPF implementation
