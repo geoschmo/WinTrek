@@ -34,6 +34,16 @@ public class DamageState
     public bool IsDamaged(ShipSystem system) => _damage[system] > 0;
 
     /// <summary>
+    /// Gets the damage level for a specific system.
+    /// </summary>
+    public int GetDamageLevel(ShipSystem system) => _damage[system];
+
+    /// <summary>
+    /// Sets the damage level for a specific system.
+    /// </summary>
+    public void SetDamageLevel(ShipSystem system, int level) => _damage[system] = Math.Max(0, level);
+
+    /// <summary>
     /// Checks if any system is currently damaged.
     /// </summary>
     public bool HasAnyDamage => _damage.Values.Any(d => d > 0);

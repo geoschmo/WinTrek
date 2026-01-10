@@ -403,6 +403,99 @@ public class GameEngine : IGameEngine
         };
     }
 
+    public void SaveGame(string filePath)
+    {
+        var saveService = new GameSaveService();
+        var saveData = saveService.CreateSaveData(State, Enterprise, Galaxy, _klingonShips);
+        saveService.SaveToFile(saveData, filePath);
+        LogMessage($"Game saved successfully.", MessageType.Success);
+    }
+
+    public bool LoadGame(string filePath)
+    {
+        var saveService = new GameSaveService();
+        var saveData = saveService.LoadFromFile(filePath);
+
+        if (saveData == null)
+        {
+            LogMessage("Failed to load save file.", MessageType.Warning);
+            return false;
+        }
+
+        try
+        {
+            // Restore game state
+            State.Stardate = saveData.Stardate;
+            State.TimeRemaining = saveData.TimeRemaining;
+            State.IsGameActive = saveData.IsGameActive;
+
+            // Restore Enterprise
+            Enterprise.QuadrantPosition = new Position(saveData.Enterprise.QuadrantX, saveData.Enterprise.QuadrantY);
+            Enterprise.SectorPosition = new Position(saveData.Enterprise.SectorX, saveData.Enterprise.SectorY);
+            Enterprise.Energy = saveData.Enterprise.Energy;
+            Enterprise.ShieldLevel = saveData.Enterprise.ShieldLevel;
+            Enterprise.PhotonTorpedoes = saveData.Enterprise.PhotonTorpedoes;
+            Enterprise.IsDocked = saveData.Enterprise.IsDocked;
+
+            foreach (var kvp in saveData.Enterprise.DamageState)
+            {
+                if (Enum.TryParse<ShipSystem>(kvp.Key, out var system))
+                {
+                    Enterprise.Damage.SetDamageLevel(system, kvp.Value);
+                }
+            }
+
+            // Restore Galaxy
+            foreach (var qData in saveData.Galaxy.Quadrants)
+            {
+                var quadrant = Galaxy[qData.X, qData.Y];
+                quadrant.IsScanned = qData.IsScanned;
+                quadrant.ClearSectors();
+
+                // Restore starbase
+                if (qData.HasStarbase && qData.StarbaseX >= 0 && qData.StarbaseY >= 0)
+                {
+                    quadrant[qData.StarbaseX, qData.StarbaseY] = SectorContent.Starbase;
+                    if (qData.X == Enterprise.QuadrantPosition.X && qData.Y == Enterprise.QuadrantPosition.Y)
+                    {
+                        _starbasePosition = new Position(qData.StarbaseX, qData.StarbaseY);
+                    }
+                }
+
+                // Restore stars
+                foreach (var starPos in qData.StarPositions)
+                {
+                    if (starPos.Length >= 2)
+                    {
+                        quadrant[starPos[0], starPos[1]] = SectorContent.Star;
+                    }
+                }
+            }
+
+            // Restore current quadrant Klingons
+            _klingonShips.Clear();
+            var currentQuadrant = CurrentQuadrant;
+            foreach (var kData in saveData.CurrentKlingons)
+            {
+                var pos = new Position(kData.SectorX, kData.SectorY);
+                currentQuadrant[pos] = SectorContent.Klingon;
+                _klingonShips.Add(new KlingonShip { SectorPosition = pos, ShieldLevel = kData.ShieldLevel });
+            }
+
+            // Place Enterprise in current quadrant
+            currentQuadrant[Enterprise.SectorPosition] = SectorContent.Enterprise;
+
+            LogMessage($"Game loaded successfully. Stardate: {State.Stardate}", MessageType.Success);
+            OnStateChanged();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            LogMessage($"Error loading game: {ex.Message}", MessageType.Warning);
+            return false;
+        }
+    }
+
     #endregion
 
     #region Private Methods

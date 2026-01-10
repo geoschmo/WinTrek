@@ -127,6 +127,19 @@ public interface IGameEngine
     /// </summary>
     NavigationSolution? CalculateStarbaseSolution();
 
+    /// <summary>
+    /// Saves the current game to a file.
+    /// </summary>
+    /// <param name="filePath">Path to save the game file.</param>
+    void SaveGame(string filePath);
+
+    /// <summary>
+    /// Loads a game from a file.
+    /// </summary>
+    /// <param name="filePath">Path to the save file.</param>
+    /// <returns>True if the game was loaded successfully.</returns>
+    bool LoadGame(string filePath);
+
     #endregion
 }
 

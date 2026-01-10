@@ -122,6 +122,41 @@ public partial class MainViewModel : ViewModelBase
     }
 
     [RelayCommand]
+    private void SaveGame()
+    {
+        var dialog = new Microsoft.Win32.SaveFileDialog
+        {
+            Filter = "WinTrek Save Files (*.wtrek)|*.wtrek",
+            DefaultExt = ".wtrek",
+            Title = "Save Game"
+        };
+
+        if (dialog.ShowDialog() == true)
+        {
+            _engine.SaveGame(dialog.FileName);
+            RefreshAllProperties();
+        }
+    }
+
+    [RelayCommand]
+    private void LoadGame()
+    {
+        var dialog = new Microsoft.Win32.OpenFileDialog
+        {
+            Filter = "WinTrek Save Files (*.wtrek)|*.wtrek",
+            DefaultExt = ".wtrek",
+            Title = "Load Game"
+        };
+
+        if (dialog.ShowDialog() == true)
+        {
+            Messages.Clear();
+            _engine.LoadGame(dialog.FileName);
+            RefreshAllProperties();
+        }
+    }
+
+    [RelayCommand]
     private void Navigate()
     {
         if (double.TryParse(NavigationDirection, out double direction) &&

@@ -4,6 +4,11 @@
              xmlns:local="clr-namespace:WinTrek.UI"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/LcarsTheme.xaml"/>
+                <ResourceDictionary Source="Themes/Animations.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

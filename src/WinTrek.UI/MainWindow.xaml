@@ -6,8 +6,8 @@
         xmlns:vm="clr-namespace:WinTrek.UI.ViewModels"
         xmlns:conv="clr-namespace:WinTrek.UI.Converters"
         mc:Ignorable="d"
-        Title="WinTrek" Height="700" Width="1000"
-        Background="#1a1a2e">
+        Title="WinTrek - USS Enterprise NCC-1701" Height="720" Width="1050"
+        Background="{DynamicResource LcarsBackgroundBrush}">
 
     <Window.DataContext>
         <vm:MainViewModel />
@@ -18,73 +18,58 @@
         <conv:SectorContentToColorConverter x:Key="SectorContentToColorConverter"/>
         <conv:ConditionToColorConverter x:Key="ConditionToColorConverter"/>
         <conv:MessageTypeToColorConverter x:Key="MessageTypeToColorConverter"/>
-
-        <!-- Dark theme colors -->
-        <SolidColorBrush x:Key="PanelBackground" Color="#16213e"/>
-        <SolidColorBrush x:Key="PanelBorder" Color="#0f3460"/>
-        <SolidColorBrush x:Key="TextColor" Color="#e8e8e8"/>
-        <SolidColorBrush x:Key="AccentColor" Color="#e94560"/>
-        <SolidColorBrush x:Key="GreenAlert" Color="#00ff00"/>
-        <SolidColorBrush x:Key="YellowAlert" Color="#ffff00"/>
-        <SolidColorBrush x:Key="RedAlert" Color="#ff0000"/>
-
-        <!-- GroupBox Style -->
-        <Style TargetType="GroupBox">
-            <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
-            <Setter Property="BorderBrush" Value="{StaticResource PanelBorder}"/>
-            <Setter Property="Background" Value="{StaticResource PanelBackground}"/>
-            <Setter Property="Margin" Value="3"/>
-            <Setter Property="Padding" Value="5"/>
-        </Style>
-
-        <!-- Button Style -->
-        <Style TargetType="Button">
-            <Setter Property="Background" Value="{StaticResource PanelBorder}"/>
-            <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
-            <Setter Property="Padding" Value="10,5"/>
-            <Setter Property="Margin" Value="2"/>
-            <Setter Property="BorderBrush" Value="{StaticResource AccentColor}"/>
-        </Style>
-
-        <!-- TextBox Style -->
-        <Style TargetType="TextBox">
-            <Setter Property="Background" Value="#0a0a15"/>
-            <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
-            <Setter Property="BorderBrush" Value="{StaticResource PanelBorder}"/>
-            <Setter Property="Padding" Value="3"/>
-            <Setter Property="Margin" Value="2"/>
-        </Style>
-
-        <!-- Label Style -->
-        <Style TargetType="Label">
-            <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
-        </Style>
-
-        <!-- TextBlock Style -->
-        <Style TargetType="TextBlock">
-            <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
-        </Style>
     </Window.Resources>
 
-    <Grid>
+    <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Menu Bar -->
-        <Menu Grid.Row="0" Background="{StaticResource PanelBackground}">
-            <MenuItem Header="_Game" Foreground="{StaticResource TextColor}">
-                <MenuItem Header="_New Game" Command="{Binding NewGameCommand}"/>
-                <Separator/>
-                <MenuItem Header="E_xit" Click="ExitMenuItem_Click"/>
-            </MenuItem>
-        </Menu>
+        <!-- LCARS Header Bar -->
+        <Border Grid.Row="0" Background="{DynamicResource LcarsOrangeBrush}"
+                CornerRadius="20,20,0,0" Margin="0,0,0,5">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Left elbow -->
+                <Border Grid.Column="0" Background="{DynamicResource LcarsPurpleBrush}"
+                        Width="100" CornerRadius="20,0,0,0" Margin="0,0,5,0">
+                    <TextBlock Text="LCARS" FontFamily="Arial Black" FontSize="14"
+                               Foreground="Black" HorizontalAlignment="Center"
+                               VerticalAlignment="Center"/>
+                </Border>
+
+                <!-- Title -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="10,5">
+                    <TextBlock Text="USS ENTERPRISE" FontFamily="Arial Black" FontSize="16"
+                               Foreground="Black" Margin="0,0,20,0"/>
+                    <Menu Background="Transparent">
+                        <MenuItem Header="_GAME" FontFamily="Arial Black" FontSize="11" Foreground="Black">
+                            <MenuItem Header="_New Game" Command="{Binding NewGameCommand}"/>
+                            <Separator/>
+                            <MenuItem Header="_Save Game" Command="{Binding SaveGameCommand}"/>
+                            <MenuItem Header="_Load Game" Command="{Binding LoadGameCommand}"/>
+                            <Separator/>
+                            <MenuItem Header="E_xit" Click="ExitMenuItem_Click"/>
+                        </MenuItem>
+                    </Menu>
+                </StackPanel>
+
+                <!-- Right accent -->
+                <Border Grid.Column="2" Background="{DynamicResource LcarsBeigeBrush}"
+                        Width="80" CornerRadius="0,20,0,0"/>
+            </Grid>
+        </Border>
 
         <!-- Main Content -->
-        <Grid Grid.Row="1" Margin="5">
+        <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="250"/>
+                <ColumnDefinition Width="260"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="280"/>
             </Grid.ColumnDefinitions>
@@ -93,7 +78,7 @@
             <StackPanel Grid.Column="0">
 
                 <!-- Ship Status -->
-                <GroupBox Header="Ship Status">
+                <GroupBox Header="SHIP STATUS" Style="{DynamicResource LcarsGroupBox}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -112,119 +97,141 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
-                        <Label Grid.Row="0" Content="Region:"/>
-                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding QuadrantName}" VerticalAlignment="Center"/>
+                        <Label Grid.Row="0" Content="REGION:" Style="{DynamicResource LcarsLabel}"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding QuadrantName}"
+                                   Style="{DynamicResource LcarsTextBlock}" VerticalAlignment="Center"/>
 
-                        <Label Grid.Row="1" Content="Quadrant:"/>
-                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding QuadrantPosition}" VerticalAlignment="Center"/>
+                        <Label Grid.Row="1" Content="QUADRANT:" Style="{DynamicResource LcarsLabel}"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding QuadrantPosition}"
+                                   Style="{DynamicResource LcarsTextBlock}" VerticalAlignment="Center"/>
 
-                        <Label Grid.Row="2" Content="Sector:"/>
-                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding SectorPosition}" VerticalAlignment="Center"/>
+                        <Label Grid.Row="2" Content="SECTOR:" Style="{DynamicResource LcarsLabel}"/>
+                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding SectorPosition}"
+                                   Style="{DynamicResource LcarsTextBlock}" VerticalAlignment="Center"/>
 
-                        <Label Grid.Row="3" Content="Stardate:"/>
-                        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Stardate}" VerticalAlignment="Center"/>
+                        <Label Grid.Row="3" Content="STARDATE:" Style="{DynamicResource LcarsLabel}"/>
+                        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Stardate}"
+                                   Style="{DynamicResource LcarsTextBlock}" VerticalAlignment="Center"/>
 
-                        <Label Grid.Row="4" Content="Time Left:"/>
-                        <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding TimeRemaining}" VerticalAlignment="Center"/>
+                        <Label Grid.Row="4" Content="TIME LEFT:" Style="{DynamicResource LcarsLabel}"/>
+                        <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding TimeRemaining}"
+                                   Style="{DynamicResource LcarsTextBlock}" VerticalAlignment="Center"/>
 
-                        <Label Grid.Row="5" Content="Condition:"/>
-                        <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding Condition}" VerticalAlignment="Center" FontWeight="Bold"
+                        <Label Grid.Row="5" Content="CONDITION:" Style="{DynamicResource LcarsLabel}"/>
+                        <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding Condition}"
+                                   VerticalAlignment="Center" FontWeight="Bold" FontFamily="Arial Black"
                                    Foreground="{Binding Condition, Converter={StaticResource ConditionToColorConverter}}"/>
 
-                        <Label Grid.Row="6" Content="Energy:"/>
-                        <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding Energy}" VerticalAlignment="Center"/>
+                        <Label Grid.Row="6" Content="ENERGY:" Style="{DynamicResource LcarsLabel}"/>
+                        <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding Energy}"
+                                   Style="{DynamicResource LcarsTextBlock}" VerticalAlignment="Center"/>
 
-                        <Label Grid.Row="7" Content="Shields:"/>
-                        <TextBlock Grid.Row="7" Grid.Column="1" Text="{Binding ShieldLevel}" VerticalAlignment="Center"/>
+                        <Label Grid.Row="7" Content="SHIELDS:" Style="{DynamicResource LcarsLabel}"/>
+                        <TextBlock Grid.Row="7" Grid.Column="1" Text="{Binding ShieldLevel}"
+                                   Style="{DynamicResource LcarsTextBlock}" VerticalAlignment="Center"/>
 
-                        <Label Grid.Row="8" Content="Torpedoes:"/>
-                        <TextBlock Grid.Row="8" Grid.Column="1" Text="{Binding PhotonTorpedoes}" VerticalAlignment="Center"/>
+                        <Label Grid.Row="8" Content="TORPEDOES:" Style="{DynamicResource LcarsLabel}"/>
+                        <TextBlock Grid.Row="8" Grid.Column="1" Text="{Binding PhotonTorpedoes}"
+                                   Style="{DynamicResource LcarsTextBlock}" VerticalAlignment="Center"/>
 
-                        <Label Grid.Row="9" Content="Docked:"/>
-                        <TextBlock Grid.Row="9" Grid.Column="1" Text="{Binding IsDocked}" VerticalAlignment="Center"/>
+                        <Label Grid.Row="9" Content="DOCKED:" Style="{DynamicResource LcarsLabel}"/>
+                        <TextBlock Grid.Row="9" Grid.Column="1" Text="{Binding IsDocked}"
+                                   Style="{DynamicResource LcarsTextBlock}" VerticalAlignment="Center"/>
                     </Grid>
                 </GroupBox>
 
                 <!-- Mission Status -->
-                <GroupBox Header="Mission Status">
+                <GroupBox Header="MISSION STATUS" Style="{DynamicResource LcarsGroupBox}">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <Label Content="Klingons:"/>
-                            <TextBlock Text="{Binding TotalKlingons}" VerticalAlignment="Center" Foreground="{StaticResource RedAlert}"/>
+                            <Label Content="KLINGONS:" Style="{DynamicResource LcarsLabel}"/>
+                            <TextBlock Text="{Binding TotalKlingons}" VerticalAlignment="Center"
+                                       Foreground="{DynamicResource LcarsRedBrush}" FontWeight="Bold" FontFamily="Consolas"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <Label Content="Starbases:"/>
-                            <TextBlock Text="{Binding TotalStarbases}" VerticalAlignment="Center"/>
+                            <Label Content="STARBASES:" Style="{DynamicResource LcarsLabel}"/>
+                            <TextBlock Text="{Binding TotalStarbases}" VerticalAlignment="Center"
+                                       Foreground="{DynamicResource LcarsGreenBrush}" FontFamily="Consolas"/>
                         </StackPanel>
                     </StackPanel>
                 </GroupBox>
 
                 <!-- Navigation -->
-                <GroupBox Header="Navigation">
+                <GroupBox Header="NAVIGATION" Style="{DynamicResource LcarsGroupBox}">
                     <StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Label Content="Direction (1-9):"/>
-                            <TextBox Text="{Binding NavigationDirection}" Width="50"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <Label Content="DIRECTION:" Style="{DynamicResource LcarsLabel}" Width="85"/>
+                            <TextBox Text="{Binding NavigationDirection}" Width="50"
+                                     Style="{DynamicResource LcarsTextBox}"/>
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Label Content="Warp (0.1-8):"/>
-                            <TextBox Text="{Binding NavigationWarpFactor}" Width="50"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <Label Content="WARP:" Style="{DynamicResource LcarsLabel}" Width="85"/>
+                            <TextBox Text="{Binding NavigationWarpFactor}" Width="50"
+                                     Style="{DynamicResource LcarsTextBox}"/>
                         </StackPanel>
-                        <Button Content="Engage" Command="{Binding NavigateCommand}"/>
+                        <Button Content="ENGAGE" Command="{Binding NavigateCommand}"
+                                Style="{DynamicResource AnimatedLcarsButton}" Margin="0,5,0,0"/>
                     </StackPanel>
                 </GroupBox>
 
                 <!-- Shields -->
-                <GroupBox Header="Shield Control">
+                <GroupBox Header="SHIELD CONTROL" Style="{DynamicResource LcarsGroupBox}">
                     <StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Label Content="Energy:"/>
-                            <TextBox Text="{Binding ShieldTransfer}" Width="50"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <Label Content="ENERGY:" Style="{DynamicResource LcarsLabel}" Width="70"/>
+                            <TextBox Text="{Binding ShieldTransfer}" Width="50"
+                                     Style="{DynamicResource LcarsTextBox}"/>
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Button Content="Add" Command="{Binding AddShieldsCommand}" Width="70"/>
-                            <Button Content="Remove" Command="{Binding RemoveShieldsCommand}" Width="70"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                            <Button Content="ADD" Command="{Binding AddShieldsCommand}"
+                                    Style="{DynamicResource LcarsButton}" Width="80"/>
+                            <Button Content="REMOVE" Command="{Binding RemoveShieldsCommand}"
+                                    Style="{DynamicResource LcarsButtonSecondary}" Width="80"/>
                         </StackPanel>
                     </StackPanel>
                 </GroupBox>
             </StackPanel>
 
             <!-- Center Panel: Sector Grid & Messages -->
-            <Grid Grid.Column="1">
+            <Grid Grid.Column="1" Margin="5,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="200"/>
+                    <RowDefinition Height="180"/>
                 </Grid.RowDefinitions>
 
                 <!-- Sector Display -->
-                <GroupBox Header="Short Range Scan" Grid.Row="0">
-                    <ItemsControl ItemsSource="{Binding SectorGrid}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <UniformGrid Rows="8" Columns="8"/>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Border BorderBrush="{StaticResource PanelBorder}" BorderThickness="1" Background="#0a0a15">
-                                    <TextBlock Text="{Binding Symbol}"
-                                               FontFamily="Consolas"
-                                               FontSize="14"
-                                               FontWeight="Bold"
-                                               HorizontalAlignment="Center"
-                                               VerticalAlignment="Center"
-                                               Foreground="{Binding Content, Converter={StaticResource SectorContentToColorConverter}}"/>
-                                </Border>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                <GroupBox Header="SHORT RANGE SCAN" Grid.Row="0" Style="{DynamicResource LcarsGroupBox}">
+                    <Border Background="#0a0a15" CornerRadius="5" Padding="5">
+                        <ItemsControl ItemsSource="{Binding SectorGrid}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <UniformGrid Rows="8" Columns="8"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="{DynamicResource LcarsPurpleBrush}"
+                                            BorderThickness="1" Background="#050510" Margin="1">
+                                        <TextBlock Text="{Binding Symbol}"
+                                                   FontFamily="Consolas"
+                                                   FontSize="14"
+                                                   FontWeight="Bold"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   Foreground="{Binding Content, Converter={StaticResource SectorContentToColorConverter}}"/>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Border>
                 </GroupBox>
 
                 <!-- Communications -->
-                <GroupBox Header="Communications" Grid.Row="1">
+                <GroupBox Header="COMMUNICATIONS" Grid.Row="1" Style="{DynamicResource LcarsGroupBox}">
                     <ListBox ItemsSource="{Binding Messages}"
                              Background="#0a0a15"
-                             BorderThickness="0">
+                             BorderThickness="0"
+                             Style="{DynamicResource LcarsListBox}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Message}"
@@ -242,38 +249,49 @@
             <StackPanel Grid.Column="2">
 
                 <!-- Weapons -->
-                <GroupBox Header="Tactical">
+                <GroupBox Header="TACTICAL" Style="{DynamicResource LcarsGroupBox}">
                     <StackPanel>
-                        <TextBlock Text="Phasers" FontWeight="Bold" Margin="0,5"/>
-                        <StackPanel Orientation="Horizontal">
-                            <Label Content="Energy:"/>
-                            <TextBox Text="{Binding PhaserEnergy}" Width="50"/>
+                        <TextBlock Text="PHASERS" FontWeight="Bold" Margin="0,5"
+                                   Foreground="{DynamicResource LcarsBeigeBrush}" FontFamily="Arial Black"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <Label Content="ENERGY:" Style="{DynamicResource LcarsLabel}" Width="70"/>
+                            <TextBox Text="{Binding PhaserEnergy}" Width="50"
+                                     Style="{DynamicResource LcarsTextBox}"/>
                         </StackPanel>
-                        <Button Content="Fire Phasers" Command="{Binding FirePhasersCommand}"/>
+                        <Button Content="FIRE PHASERS" Command="{Binding FirePhasersCommand}"
+                                Style="{DynamicResource AnimatedAlertButton}"/>
 
-                        <TextBlock Text="Photon Torpedoes" FontWeight="Bold" Margin="0,10,0,5"/>
-                        <StackPanel Orientation="Horizontal">
-                            <Label Content="Direction:"/>
-                            <TextBox Text="{Binding TorpedoDirection}" Width="50"/>
+                        <TextBlock Text="TORPEDOES" FontWeight="Bold" Margin="0,10,0,5"
+                                   Foreground="{DynamicResource LcarsBeigeBrush}" FontFamily="Arial Black"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <Label Content="DIRECTION:" Style="{DynamicResource LcarsLabel}" Width="80"/>
+                            <TextBox Text="{Binding TorpedoDirection}" Width="50"
+                                     Style="{DynamicResource LcarsTextBox}"/>
                         </StackPanel>
-                        <Button Content="Fire Torpedo" Command="{Binding FireTorpedoCommand}"/>
+                        <Button Content="FIRE TORPEDO" Command="{Binding FireTorpedoCommand}"
+                                Style="{DynamicResource AnimatedAlertButton}"/>
                     </StackPanel>
                 </GroupBox>
 
                 <!-- Sensors -->
-                <GroupBox Header="Sensors">
+                <GroupBox Header="SENSORS" Style="{DynamicResource LcarsGroupBox}">
                     <StackPanel>
-                        <Button Content="Short Range Scan" Command="{Binding ShortRangeScanCommand}"/>
-                        <Button Content="Long Range Scan" Command="{Binding LongRangeScanCommand}"/>
+                        <Button Content="SHORT RANGE SCAN" Command="{Binding ShortRangeScanCommand}"
+                                Style="{DynamicResource LcarsButton}"/>
+                        <Button Content="LONG RANGE SCAN" Command="{Binding LongRangeScanCommand}"
+                                Style="{DynamicResource LcarsButton}"/>
                     </StackPanel>
                 </GroupBox>
 
                 <!-- Computer -->
-                <GroupBox Header="Computer">
+                <GroupBox Header="COMPUTER" Style="{DynamicResource LcarsGroupBox}">
                     <StackPanel>
-                        <Button Content="Galactic Record" Command="{Binding ViewGalacticRecordCommand}"/>
-                        <Button Content="Status Report" Command="{Binding ViewStatusReportCommand}"/>
-                        <Button Content="Torpedo Calculator" Command="{Binding CalculateTorpedoSolutionsCommand}"/>
+                        <Button Content="GALACTIC RECORD" Command="{Binding ViewGalacticRecordCommand}"
+                                Style="{DynamicResource LcarsButtonSecondary}"/>
+                        <Button Content="STATUS REPORT" Command="{Binding ViewStatusReportCommand}"
+                                Style="{DynamicResource LcarsButtonSecondary}"/>
+                        <Button Content="TORPEDO CALC" Command="{Binding CalculateTorpedoSolutionsCommand}"
+                                Style="{DynamicResource LcarsButtonSecondary}"/>
                     </StackPanel>
                 </GroupBox>
 
