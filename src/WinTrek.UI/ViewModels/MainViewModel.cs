@@ -182,22 +182,37 @@ public partial class MainViewModel : ViewModelBase
     [RelayCommand]
     private void LongRangeScan()
     {
-        _engine.LongRangeScan();
+        var result = _engine.LongRangeScan();
         RefreshAllProperties();
+
+        if (result.Success)
+        {
+            var dialog = new Views.LongRangeScanWindow(result);
+            dialog.Owner = System.Windows.Application.Current.MainWindow;
+            dialog.ShowDialog();
+        }
     }
 
     [RelayCommand]
     private void ViewGalacticRecord()
     {
-        _engine.GetGalacticRecord();
-        // TODO: Show galactic record dialog
+        var result = _engine.GetGalacticRecord();
+
+        if (result.Success)
+        {
+            var dialog = new Views.GalacticRecordWindow(result);
+            dialog.Owner = System.Windows.Application.Current.MainWindow;
+            dialog.ShowDialog();
+        }
     }
 
     [RelayCommand]
     private void ViewStatusReport()
     {
-        _engine.GetSystemStatus();
-        // TODO: Show status report dialog
+        var result = _engine.GetSystemStatus();
+        var dialog = new Views.StatusReportWindow(result);
+        dialog.Owner = System.Windows.Application.Current.MainWindow;
+        dialog.ShowDialog();
     }
 
     [RelayCommand]
