@@ -82,7 +82,7 @@ public partial class MainViewModel : ViewModelBase
     #region Input Properties
 
     [ObservableProperty]
-    private string _navigationDirection = "1";
+    private string _navigationDirection = "1.0";
 
     [ObservableProperty]
     private string _navigationWarpFactor = "1.0";
@@ -91,7 +91,7 @@ public partial class MainViewModel : ViewModelBase
     private string _phaserEnergy = "100";
 
     [ObservableProperty]
-    private string _torpedoDirection = "1";
+    private string _torpedoDirection = "1.0";
 
     [ObservableProperty]
     private string _shieldTransfer = "100";

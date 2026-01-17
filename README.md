@@ -1,6 +1,6 @@
 # WinTrek
 
-A modern Windows desktop remake of the classic Star Trek text-based strategy game, built with WPF and .NET 8. Features an LCARS-inspired interface paying homage to Star Trek: The Next Generation's iconic computer displays.
+A remake of the classic Star Trek text-based strategy game, built with WPF and .NET 8. Features an LCARS-inspired interface paying homage to Star Trek: The Next Generation's iconic computer displays.
 
 ![WinTrek Screenshot](docs/images/wintrek-screenshot.png)
 
@@ -44,7 +44,7 @@ Throughout the 1980s and 1990s, Star Trek text games continued to evolve on DOS 
 
 ### WinTrek
 
-This project modernizes a personal DOS-era Star Trek implementation, preserving the classic gameplay while bringing it to modern Windows with a polished graphical interface. The LCARS visual style connects this remake to the broader Star Trek universe while honoring the text-based roots of the original.
+This project modernizes a personal DOS-era Star Trek implementation, preserving the classic gameplay while updating it with a retro style graphical interface. The LCARS visual style connects this remake to the broader Star Trek universe while honoring the text-based roots of the original.
 
 ## Building
 

@@ -1,0 +1,46 @@
+<Window x:Class="WinTrek.UI.Views.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="About WinTrek" Height="500" Width="600"
+        WindowStartupLocation="CenterOwner"
+        Background="#1a1a2e">
+
+    <Window.Resources>
+        <SolidColorBrush x:Key="PanelBackground" Color="#16213e"/>
+        <SolidColorBrush x:Key="PanelBorder" Color="#0f3460"/>
+        <SolidColorBrush x:Key="TextColor" Color="#e8e8e8"/>
+        <SolidColorBrush x:Key="HeaderColor" Color="#cc99ff"/>
+        <SolidColorBrush x:Key="SubHeaderColor" Color="#ff9966"/>
+    </Window.Resources>
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <TextBlock Grid.Row="0" Text="WINTREK"
+                   FontSize="24" FontWeight="Bold" FontFamily="Arial Black"
+                   Foreground="{StaticResource HeaderColor}"
+                   HorizontalAlignment="Center" Margin="0,0,0,10"/>
+
+        <!-- Content -->
+        <Border Grid.Row="1" Background="{StaticResource PanelBackground}"
+                BorderBrush="{StaticResource PanelBorder}" BorderThickness="2" Padding="15">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <TextBlock x:Name="AboutContent"
+                           FontFamily="Consolas"
+                           FontSize="12"
+                           Foreground="{StaticResource TextColor}"
+                           TextWrapping="Wrap"/>
+            </ScrollViewer>
+        </Border>
+
+        <!-- Footer -->
+        <Button Grid.Row="2" Content="Close" Width="80" Margin="0,10,0,0"
+                HorizontalAlignment="Center" Click="CloseButton_Click"
+                Background="{StaticResource PanelBorder}" Foreground="{StaticResource TextColor}"/>
+    </Grid>
+</Window>

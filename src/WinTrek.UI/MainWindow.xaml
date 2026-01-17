@@ -57,6 +57,9 @@
                             <Separator/>
                             <MenuItem Header="E_xit" Click="ExitMenuItem_Click"/>
                         </MenuItem>
+                        <MenuItem Header="_HELP" FontFamily="Arial Black" FontSize="11" Foreground="Black">
+                            <MenuItem Header="_About" Click="AboutMenuItem_Click"/>
+                        </MenuItem>
                     </Menu>
                 </StackPanel>
 
