@@ -1,0 +1,56 @@
+@* Ship Status Panel - displays Enterprise stats *@
+
+<LcarsGroupBox Header="SHIP STATUS">
+    <div class="status-grid">
+        <span class="lcars-label">REGION:</span>
+        <span class="lcars-text">@QuadrantName</span>
+
+        <span class="lcars-label">QUADRANT:</span>
+        <span class="lcars-text">@QuadrantPosition</span>
+
+        <span class="lcars-label">SECTOR:</span>
+        <span class="lcars-text">@SectorPosition</span>
+
+        <span class="lcars-label">STARDATE:</span>
+        <span class="lcars-text">@Stardate</span>
+
+        <span class="lcars-label">TIME LEFT:</span>
+        <span class="lcars-text">@TimeRemaining</span>
+
+        <span class="lcars-label">CONDITION:</span>
+        <span class="@ConditionClass" style="font-weight: bold; font-family: 'Arial Black', Arial, sans-serif;">@Condition</span>
+
+        <span class="lcars-label">ENERGY:</span>
+        <span class="lcars-text">@Energy</span>
+
+        <span class="lcars-label">SHIELDS:</span>
+        <span class="lcars-text">@ShieldLevel</span>
+
+        <span class="lcars-label">TORPEDOES:</span>
+        <span class="lcars-text">@PhotonTorpedoes</span>
+
+        <span class="lcars-label">DOCKED:</span>
+        <span class="lcars-text">@IsDocked</span>
+    </div>
+</LcarsGroupBox>
+
+@code {
+    [Parameter] public string QuadrantName { get; set; } = string.Empty;
+    [Parameter] public string QuadrantPosition { get; set; } = string.Empty;
+    [Parameter] public string SectorPosition { get; set; } = string.Empty;
+    [Parameter] public int Stardate { get; set; }
+    [Parameter] public int TimeRemaining { get; set; }
+    [Parameter] public string Condition { get; set; } = "GREEN";
+    [Parameter] public int Energy { get; set; }
+    [Parameter] public int ShieldLevel { get; set; }
+    [Parameter] public int PhotonTorpedoes { get; set; }
+    [Parameter] public bool IsDocked { get; set; }
+
+    private string ConditionClass => Condition.ToUpper() switch
+    {
+        "GREEN" => "condition-green",
+        "YELLOW" => "condition-yellow",
+        "RED" => "condition-red",
+        _ => "lcars-text"
+    };
+}

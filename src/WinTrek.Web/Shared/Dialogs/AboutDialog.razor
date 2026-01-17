@@ -1,0 +1,63 @@
+@* About Dialog *@
+
+@if (IsVisible)
+{
+    <div class="dialog-overlay" @onclick="Close">
+        <div class="dialog-content" @onclick:stopPropagation="true" style="min-width: 450px;">
+            <div class="dialog-header">
+                <span>ABOUT WINTREK</span>
+                <button class="dialog-close" @onclick="Close">&times;</button>
+            </div>
+            <div class="dialog-body">
+                <div class="lcars-header" style="text-align: center; margin-bottom: 15px;">
+                    WinTrek Web Edition
+                </div>
+
+                <div class="lcars-text" style="margin-bottom: 10px;">
+                    Version 1.0.0
+                </div>
+
+                <div class="lcars-text-light" style="margin-bottom: 15px; line-height: 1.5;">
+                    A classic Star Trek-themed space exploration game, modernized
+                    from the original 1970s BASIC game "Super Star Trek."
+                </div>
+
+                <div class="lcars-label" style="margin-top: 15px;">MISSION:</div>
+                <div class="lcars-text" style="margin-bottom: 10px;">
+                    Destroy all Klingon warships within the time limit. Dock at
+                    starbases for repairs and resupply.
+                </div>
+
+                <div class="lcars-label" style="margin-top: 15px;">CONTROLS:</div>
+                <div class="lcars-text" style="font-size: 11px; line-height: 1.6;">
+                    <strong>Navigation:</strong> Direction (1-9) and Warp Factor<br />
+                    <strong>Phasers:</strong> Energy-based weapons (automatic targeting)<br />
+                    <strong>Torpedoes:</strong> Limited supply, specify direction<br />
+                    <strong>Shields:</strong> Transfer energy to/from shields
+                </div>
+
+                <div class="lcars-label" style="margin-top: 15px;">DIRECTION COMPASS:</div>
+                <div class="direction-compass" style="margin: 10px auto;">
+                    <span>4</span><span>3</span><span>2</span>
+                    <span>5</span><span class="center">*</span><span>1</span>
+                    <span>6</span><span>7</span><span>8</span>
+                </div>
+
+                <div style="margin-top: 20px; text-align: center; font-size: 11px; color: var(--lcars-beige);">
+                    Live Long and Prosper
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public bool IsVisible { get; set; }
+    [Parameter] public EventCallback<bool> IsVisibleChanged { get; set; }
+
+    private async Task Close()
+    {
+        IsVisible = false;
+        await IsVisibleChanged.InvokeAsync(false);
+    }
+}

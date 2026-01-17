@@ -1,0 +1,58 @@
+@* Tactical Panel - Phasers and Torpedoes *@
+
+<LcarsGroupBox Header="TACTICAL">
+    <div class="tactical-section">
+        <div class="tactical-header">PHASERS</div>
+        <div class="tactical-row">
+            <span class="lcars-label" style="width: 70px;">ENERGY:</span>
+            <LcarsTextBox Value="@PhaserEnergy" ValueChanged="OnPhaserEnergyChanged" Width="50" />
+        </div>
+        <LcarsButton OnClick="HandleFirePhasers" Style="LcarsButton.ButtonStyle.Alert">FIRE PHASERS</LcarsButton>
+    </div>
+
+    <div class="tactical-section">
+        <div class="tactical-header">TORPEDOES</div>
+        <div class="tactical-row">
+            <span class="lcars-label" style="width: 80px;">DIRECTION:</span>
+            <LcarsTextBox Value="@TorpedoDirection" ValueChanged="OnTorpedoDirectionChanged" Width="50" />
+        </div>
+        <LcarsButton OnClick="HandleFireTorpedo" Style="LcarsButton.ButtonStyle.Alert">FIRE TORPEDO</LcarsButton>
+    </div>
+</LcarsGroupBox>
+
+@code {
+    [Parameter] public string PhaserEnergy { get; set; } = "100";
+    [Parameter] public EventCallback<string> PhaserEnergyChanged { get; set; }
+    [Parameter] public string TorpedoDirection { get; set; } = "1.0";
+    [Parameter] public EventCallback<string> TorpedoDirectionChanged { get; set; }
+    [Parameter] public EventCallback<int> OnFirePhasers { get; set; }
+    [Parameter] public EventCallback<double> OnFireTorpedo { get; set; }
+
+    private async Task OnPhaserEnergyChanged(string value)
+    {
+        PhaserEnergy = value;
+        await PhaserEnergyChanged.InvokeAsync(value);
+    }
+
+    private async Task OnTorpedoDirectionChanged(string value)
+    {
+        TorpedoDirection = value;
+        await TorpedoDirectionChanged.InvokeAsync(value);
+    }
+
+    private async Task HandleFirePhasers()
+    {
+        if (int.TryParse(PhaserEnergy, out int energy))
+        {
+            await OnFirePhasers.InvokeAsync(energy);
+        }
+    }
+
+    private async Task HandleFireTorpedo()
+    {
+        if (double.TryParse(TorpedoDirection, out double direction))
+        {
+            await OnFireTorpedo.InvokeAsync(direction);
+        }
+    }
+}

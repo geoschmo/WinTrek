@@ -1,0 +1,461 @@
+/* LCARS Color Palette */
+:root {
+    --lcars-background: #000000;
+    --lcars-panel-background: #101020;
+    --lcars-orange: #FF9900;
+    --lcars-beige: #FFCC99;
+    --lcars-purple: #CC99CC;
+    --lcars-blue: #9999FF;
+    --lcars-teal: #99CCFF;
+    --lcars-red: #CC6666;
+    --lcars-yellow: #FFFF66;
+    --lcars-green: #99FF99;
+    --lcars-text: #FF9900;
+    --lcars-text-light: #FFCC99;
+    --lcars-dark-panel: #0a0a15;
+    --lcars-input-background: #1a1a2e;
+}
+
+/* Base Styles */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--lcars-background);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    color: var(--lcars-text);
+    min-height: 100vh;
+}
+
+/* LCARS Button Styles */
+.lcars-btn {
+    background-color: var(--lcars-orange);
+    color: black;
+    font-family: 'Arial Black', Arial, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 8px 15px;
+    margin: 2px;
+    border: none;
+    border-radius: 0 15px 15px 0;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+    text-transform: uppercase;
+    min-width: 100px;
+}
+
+.lcars-btn:hover {
+    background-color: var(--lcars-beige);
+}
+
+.lcars-btn:active {
+    background-color: var(--lcars-purple);
+}
+
+.lcars-btn:disabled {
+    background-color: #666666;
+    color: #999999;
+    cursor: not-allowed;
+}
+
+.lcars-btn-secondary {
+    background-color: var(--lcars-beige);
+    border-radius: 15px 0 0 15px;
+}
+
+.lcars-btn-secondary:hover {
+    background-color: var(--lcars-orange);
+}
+
+.lcars-btn-alert {
+    background-color: var(--lcars-red);
+    color: white;
+}
+
+.lcars-btn-alert:hover {
+    background-color: #DD7777;
+}
+
+.lcars-btn-purple {
+    background-color: var(--lcars-purple);
+}
+
+.lcars-btn-purple:hover {
+    background-color: #DDAADD;
+}
+
+/* LCARS Input Styles */
+.lcars-input {
+    background-color: var(--lcars-input-background);
+    color: var(--lcars-orange);
+    border: none;
+    border-bottom: 2px solid var(--lcars-orange);
+    font-family: Consolas, monospace;
+    font-size: 14px;
+    padding: 5px;
+    margin: 2px;
+    width: 60px;
+}
+
+.lcars-input:focus {
+    outline: none;
+    border-bottom-color: var(--lcars-beige);
+}
+
+/* LCARS Label Styles */
+.lcars-label {
+    color: var(--lcars-text-light);
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* LCARS Text Styles */
+.lcars-text {
+    color: var(--lcars-text);
+    font-family: Consolas, monospace;
+    font-size: 13px;
+}
+
+.lcars-text-light {
+    color: var(--lcars-text-light);
+}
+
+/* LCARS Header Styles */
+.lcars-header {
+    color: var(--lcars-purple);
+    font-family: 'Arial Black', Arial, sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* LCARS Group Box / Panel Styles */
+.lcars-panel {
+    margin: 3px;
+}
+
+.lcars-panel-header {
+    background-color: var(--lcars-purple);
+    color: black;
+    font-family: 'Arial Black', Arial, sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 3px 10px;
+    border-radius: 10px 10px 0 0;
+    text-transform: uppercase;
+}
+
+.lcars-panel-content {
+    background-color: var(--lcars-panel-background);
+    border: 2px solid var(--lcars-purple);
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    padding: 8px;
+}
+
+/* Color-specific panels */
+.lcars-panel-orange .lcars-panel-header {
+    background-color: var(--lcars-orange);
+}
+
+.lcars-panel-orange .lcars-panel-content {
+    border-color: var(--lcars-orange);
+}
+
+.lcars-panel-beige .lcars-panel-header {
+    background-color: var(--lcars-beige);
+}
+
+.lcars-panel-beige .lcars-panel-content {
+    border-color: var(--lcars-beige);
+}
+
+/* LCARS List Styles */
+.lcars-list {
+    background-color: var(--lcars-dark-panel);
+    color: var(--lcars-text);
+    border-top: 2px solid var(--lcars-orange);
+    font-family: Consolas, monospace;
+    list-style: none;
+    padding: 5px;
+    margin: 0;
+    overflow-y: auto;
+}
+
+/* Sector Grid Styles */
+.sector-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    gap: 2px;
+    background-color: var(--lcars-dark-panel);
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.sector-cell {
+    background-color: #050510;
+    border: 1px solid var(--lcars-purple);
+    font-family: Consolas, monospace;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    padding: 4px 2px;
+    min-height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sector-cell.enterprise {
+    color: #00FFFF;
+}
+
+.sector-cell.klingon {
+    color: var(--lcars-red);
+}
+
+.sector-cell.star {
+    color: white;
+}
+
+.sector-cell.starbase {
+    color: var(--lcars-green);
+}
+
+.sector-cell.empty {
+    color: var(--lcars-purple);
+}
+
+/* Message Colors */
+.message-info {
+    color: var(--lcars-text);
+}
+
+.message-warning {
+    color: var(--lcars-yellow);
+}
+
+.message-alert {
+    color: var(--lcars-red);
+}
+
+.message-success {
+    color: var(--lcars-green);
+}
+
+.message-damage {
+    color: var(--lcars-red);
+}
+
+.message-system {
+    color: var(--lcars-teal);
+}
+
+/* Condition Colors */
+.condition-green {
+    color: var(--lcars-green);
+}
+
+.condition-yellow {
+    color: var(--lcars-yellow);
+}
+
+.condition-red {
+    color: var(--lcars-red);
+}
+
+/* Direction Compass */
+.direction-compass {
+    display: grid;
+    grid-template-columns: repeat(3, 28px);
+    grid-template-rows: repeat(3, 24px);
+    font-family: Consolas, monospace;
+    font-size: 16px;
+    color: var(--lcars-beige);
+    text-align: center;
+}
+
+.direction-compass .center {
+    color: var(--lcars-orange);
+}
+
+/* Dialog Overlay */
+.dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.dialog-content {
+    background-color: var(--lcars-panel-background);
+    border: 3px solid var(--lcars-purple);
+    border-radius: 15px;
+    min-width: 300px;
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow: auto;
+}
+
+.dialog-header {
+    background-color: var(--lcars-purple);
+    color: black;
+    font-family: 'Arial Black', Arial, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 8px 15px;
+    border-radius: 10px 10px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dialog-body {
+    padding: 15px;
+}
+
+.dialog-close {
+    background: none;
+    border: none;
+    color: black;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0 5px;
+}
+
+/* LRS Grid (Long Range Scan) */
+.lrs-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+}
+
+.lrs-cell {
+    background-color: var(--lcars-dark-panel);
+    border: 1px solid var(--lcars-purple);
+    padding: 8px;
+    text-align: center;
+    font-family: Consolas, monospace;
+}
+
+.lrs-cell.current {
+    border-color: cyan;
+    border-width: 2px;
+}
+
+/* Galactic Record Grid */
+.galactic-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 3px;
+}
+
+.galactic-cell {
+    background-color: var(--lcars-dark-panel);
+    border: 1px solid var(--lcars-purple);
+    padding: 5px;
+    text-align: center;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+}
+
+.galactic-cell.scanned {
+    color: var(--lcars-text);
+}
+
+.galactic-cell.unscanned {
+    color: #666;
+}
+
+.galactic-cell.current {
+    border-color: cyan;
+    border-width: 2px;
+}
+
+/* Status Report */
+.status-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--lcars-purple);
+}
+
+.status-row:last-child {
+    border-bottom: none;
+}
+
+.status-ok {
+    color: var(--lcars-green);
+}
+
+.status-damaged {
+    color: var(--lcars-red);
+}
+
+.status-warning {
+    color: var(--lcars-yellow);
+}
+
+/* Utility Classes */
+.flex {
+    display: flex;
+}
+
+.flex-col {
+    flex-direction: column;
+}
+
+.flex-row {
+    flex-direction: row;
+}
+
+.gap-1 {
+    gap: 4px;
+}
+
+.gap-2 {
+    gap: 8px;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.w-full {
+    width: 100%;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.font-bold {
+    font-weight: bold;
+}
+
+.mb-2 {
+    margin-bottom: 8px;
+}
+
+.mt-2 {
+    margin-top: 8px;
+}
+
+.p-2 {
+    padding: 8px;
+}

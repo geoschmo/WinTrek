@@ -1,0 +1,55 @@
+@* Navigation Panel - direction and warp controls *@
+
+<LcarsGroupBox Header="NAVIGATION">
+    <div class="nav-controls">
+        <div class="nav-inputs">
+            <div class="nav-row">
+                <span class="lcars-label" style="width: 85px;">DIRECTION:</span>
+                <LcarsTextBox Value="@Direction" ValueChanged="OnDirectionChanged" Width="50" />
+            </div>
+            <div class="nav-row">
+                <span class="lcars-label" style="width: 85px;">WARP:</span>
+                <LcarsTextBox Value="@WarpFactor" ValueChanged="OnWarpFactorChanged" Width="50" />
+            </div>
+            <LcarsButton OnClick="HandleEngage" Style="LcarsButton.ButtonStyle.Primary">ENGAGE</LcarsButton>
+        </div>
+
+        <!-- Direction Compass -->
+        <div class="direction-compass">
+            <span>4</span>
+            <span>3</span>
+            <span>2</span>
+            <span>5</span>
+            <span class="center">*</span>
+            <span>1</span>
+            <span>6</span>
+            <span>7</span>
+            <span>8</span>
+        </div>
+    </div>
+</LcarsGroupBox>
+
+@code {
+    [Parameter] public string Direction { get; set; } = "1.0";
+    [Parameter] public EventCallback<string> DirectionChanged { get; set; }
+    [Parameter] public string WarpFactor { get; set; } = "1.0";
+    [Parameter] public EventCallback<string> WarpFactorChanged { get; set; }
+    [Parameter] public EventCallback OnNavigate { get; set; }
+
+    private async Task OnDirectionChanged(string value)
+    {
+        Direction = value;
+        await DirectionChanged.InvokeAsync(value);
+    }
+
+    private async Task OnWarpFactorChanged(string value)
+    {
+        WarpFactor = value;
+        await WarpFactorChanged.InvokeAsync(value);
+    }
+
+    private async Task HandleEngage()
+    {
+        await OnNavigate.InvokeAsync();
+    }
+}

@@ -1,0 +1,17 @@
+@* Mission Status Panel - displays Klingons and starbases remaining *@
+
+<LcarsGroupBox Header="MISSION STATUS">
+    <div class="mission-row">
+        <span class="lcars-label" style="width: 90px;">KLINGONS:</span>
+        <span class="mission-value klingons">@TotalKlingons</span>
+    </div>
+    <div class="mission-row">
+        <span class="lcars-label" style="width: 90px;">STARBASES:</span>
+        <span class="mission-value starbases">@TotalStarbases</span>
+    </div>
+</LcarsGroupBox>
+
+@code {
+    [Parameter] public int TotalKlingons { get; set; }
+    [Parameter] public int TotalStarbases { get; set; }
+}

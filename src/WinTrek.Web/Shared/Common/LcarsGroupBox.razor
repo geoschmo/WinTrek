@@ -1,0 +1,33 @@
+@* LCARS styled group box / panel component *@
+
+<div class="lcars-panel @ColorClass">
+    <div class="lcars-panel-header">@Header</div>
+    <div class="lcars-panel-content">
+        @ChildContent
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Header { get; set; } = string.Empty;
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public PanelColor Color { get; set; } = PanelColor.Purple;
+
+    private string ColorClass => Color switch
+    {
+        PanelColor.Orange => "lcars-panel-orange",
+        PanelColor.Beige => "lcars-panel-beige",
+        _ => ""
+    };
+
+    public enum PanelColor
+    {
+        Purple,
+        Orange,
+        Beige
+    }
+}

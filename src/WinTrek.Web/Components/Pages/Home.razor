@@ -1,0 +1,265 @@
+@page "/"
+@inject GameService Game
+@inject IJSRuntime JS
+@implements IDisposable
+
+<PageTitle>WinTrek - USS Enterprise NCC-1701</PageTitle>
+
+<!-- LCARS Header Bar -->
+<div class="lcars-header-bar">
+    <div class="lcars-header-elbow">LCARS</div>
+    <div class="lcars-header-title">
+        <h1>USS ENTERPRISE</h1>
+        <div class="lcars-menu">
+            <div class="lcars-menu-item">
+                <button class="lcars-menu-btn">GAME</button>
+                <div class="lcars-menu-dropdown">
+                    <button @onclick="NewGame">New Game</button>
+                    <div class="lcars-menu-divider"></div>
+                    <button @onclick="SaveGame">Save Game</button>
+                    <button @onclick="LoadGame">Load Game</button>
+                    <div class="lcars-menu-divider"></div>
+                </div>
+            </div>
+            <div class="lcars-menu-item">
+                <button class="lcars-menu-btn">HELP</button>
+                <div class="lcars-menu-dropdown">
+                    <button @onclick="ShowAbout">About</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="lcars-header-accent"></div>
+</div>
+
+<!-- Main Game Layout -->
+<div class="game-layout">
+    <!-- Left Panel: Status & Controls -->
+    <div class="left-panel">
+        <ShipStatus
+            QuadrantName="@Game.QuadrantName"
+            QuadrantPosition="@Game.QuadrantPosition"
+            SectorPosition="@Game.SectorPosition"
+            Stardate="@Game.Stardate"
+            TimeRemaining="@Game.TimeRemaining"
+            Condition="@Game.Condition"
+            Energy="@Game.Energy"
+            ShieldLevel="@Game.ShieldLevel"
+            PhotonTorpedoes="@Game.PhotonTorpedoes"
+            IsDocked="@Game.IsDocked" />
+
+        <MissionStatus
+            TotalKlingons="@Game.TotalKlingons"
+            TotalStarbases="@Game.TotalStarbases" />
+
+        <Navigation
+            Direction="@_navDirection"
+            DirectionChanged="@((v) => _navDirection = v)"
+            WarpFactor="@_navWarpFactor"
+            WarpFactorChanged="@((v) => _navWarpFactor = v)"
+            OnNavigate="HandleNavigate" />
+
+        <ShieldControl
+            TransferAmount="@_shieldTransfer"
+            TransferAmountChanged="@((v) => _shieldTransfer = v)"
+            OnTransfer="HandleShieldTransfer" />
+    </div>
+
+    <!-- Center Panel: Sector Grid & Communications -->
+    <div class="center-panel">
+        <div class="sector-display">
+            <SectorGrid Grid="@_sectorGrid" />
+        </div>
+        <div class="communications-panel">
+            <Communications Messages="@Game.Messages" />
+        </div>
+    </div>
+
+    <!-- Right Panel: Weapons & Computer -->
+    <div class="right-panel">
+        <Tactical
+            PhaserEnergy="@_phaserEnergy"
+            PhaserEnergyChanged="@((v) => _phaserEnergy = v)"
+            TorpedoDirection="@_torpedoDirection"
+            TorpedoDirectionChanged="@((v) => _torpedoDirection = v)"
+            OnFirePhasers="HandleFirePhasers"
+            OnFireTorpedo="HandleFireTorpedo" />
+
+        <Sensors
+            OnShortRangeScan="HandleShortRangeScan"
+            OnLongRangeScan="HandleLongRangeScan" />
+
+        <Computer
+            OnGalacticRecord="HandleGalacticRecord"
+            OnStatusReport="HandleStatusReport"
+            OnTorpedoCalc="HandleTorpedoCalc" />
+    </div>
+</div>
+
+<!-- Dialogs -->
+<LongRangeScanDialog
+    @bind-IsVisible="_showLongRangeScan"
+    ScanResult="_longRangeScanResult" />
+
+<GalacticRecordDialog
+    @bind-IsVisible="_showGalacticRecord"
+    RecordResult="_galacticRecordResult" />
+
+<StatusReportDialog
+    @bind-IsVisible="_showStatusReport"
+    StatusResult="_statusResult" />
+
+<AboutDialog @bind-IsVisible="_showAbout" />
+
+<!-- Game Over Overlay -->
+@if (!string.IsNullOrEmpty(_gameOverMessage))
+{
+    <div class="game-over-overlay">
+        <div class="game-over-content">
+            <div class="game-over-title">GAME OVER</div>
+            <div class="game-over-message">@_gameOverMessage</div>
+            <LcarsButton OnClick="NewGame" Style="LcarsButton.ButtonStyle.Primary">NEW GAME</LcarsButton>
+        </div>
+    </div>
+}
+
+@code {
+    // Input state
+    private string _navDirection = "1.0";
+    private string _navWarpFactor = "1.0";
+    private string _phaserEnergy = "100";
+    private string _torpedoDirection = "1.0";
+    private string _shieldTransfer = "100";
+
+    // Dialog state
+    private bool _showLongRangeScan;
+    private bool _showGalacticRecord;
+    private bool _showStatusReport;
+    private bool _showAbout;
+    private LongRangeScanResult? _longRangeScanResult;
+    private GalacticRecordResult? _galacticRecordResult;
+    private SystemStatusResult? _statusResult;
+
+    // Game state
+    private SectorCell[,] _sectorGrid = new SectorCell[8, 8];
+    private string _gameOverMessage = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        // Subscribe to game events
+        Game.OnChange += HandleStateChanged;
+        Game.OnGameEnded += HandleGameOver;
+
+        // Initialize sector grid
+        RefreshSectorGrid();
+    }
+
+    private void HandleStateChanged()
+    {
+        RefreshSectorGrid();
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void HandleGameOver(string message)
+    {
+        _gameOverMessage = message;
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void RefreshSectorGrid()
+    {
+        _sectorGrid = Game.GetSectorGrid();
+    }
+
+    // Game Actions
+    private void NewGame()
+    {
+        _gameOverMessage = string.Empty;
+        Game.NewGame();
+    }
+
+    private async Task SaveGame()
+    {
+        var json = Game.GetSaveDataJson();
+        await JS.InvokeVoidAsync("localStorage.setItem", "wintrek_save", json);
+    }
+
+    private async Task LoadGame()
+    {
+        var json = await JS.InvokeAsync<string>("localStorage.getItem", "wintrek_save");
+        if (!string.IsNullOrEmpty(json))
+        {
+            _gameOverMessage = string.Empty;
+            Game.LoadFromJson(json);
+        }
+    }
+
+    private void HandleNavigate()
+    {
+        if (double.TryParse(_navDirection, out double direction) &&
+            double.TryParse(_navWarpFactor, out double warpFactor))
+        {
+            Game.Navigate(direction, warpFactor);
+        }
+    }
+
+    private void HandleShieldTransfer(int amount)
+    {
+        Game.TransferShields(amount);
+    }
+
+    private void HandleFirePhasers(int energy)
+    {
+        Game.FirePhasers(energy);
+    }
+
+    private void HandleFireTorpedo(double direction)
+    {
+        Game.FireTorpedo(direction);
+    }
+
+    private void HandleShortRangeScan()
+    {
+        Game.ShortRangeScan();
+    }
+
+    private void HandleLongRangeScan()
+    {
+        _longRangeScanResult = Game.LongRangeScan();
+        if (_longRangeScanResult.Success)
+        {
+            _showLongRangeScan = true;
+        }
+    }
+
+    private void HandleGalacticRecord()
+    {
+        _galacticRecordResult = Game.GetGalacticRecord();
+        if (_galacticRecordResult.Success)
+        {
+            _showGalacticRecord = true;
+        }
+    }
+
+    private void HandleStatusReport()
+    {
+        _statusResult = Game.GetSystemStatus();
+        _showStatusReport = true;
+    }
+
+    private void HandleTorpedoCalc()
+    {
+        Game.CalculateTorpedoSolutions();
+    }
+
+    private void ShowAbout()
+    {
+        _showAbout = true;
+    }
+
+    public void Dispose()
+    {
+        Game.OnChange -= HandleStateChanged;
+        Game.OnGameEnded -= HandleGameOver;
+    }
+}

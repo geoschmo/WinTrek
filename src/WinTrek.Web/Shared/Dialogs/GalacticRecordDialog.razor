@@ -1,0 +1,72 @@
+@* Galactic Record Dialog - 8x8 galaxy overview *@
+
+@if (IsVisible)
+{
+    <div class="dialog-overlay" @onclick="Close">
+        <div class="dialog-content" @onclick:stopPropagation="true" style="min-width: 500px;">
+            <div class="dialog-header">
+                <span>GALACTIC RECORD</span>
+                <button class="dialog-close" @onclick="Close">&times;</button>
+            </div>
+            <div class="dialog-body">
+                @if (RecordResult?.Success == true)
+                {
+                    <div class="galactic-grid">
+                        @foreach (var quadrant in RecordResult.Quadrants)
+                        {
+                            <div class="galactic-cell @(IsCurrent(quadrant) ? "current" : "") @(quadrant.IsScanned ? "scanned" : "unscanned")"
+                                 style="color: @GetColor(quadrant)">
+                                @(quadrant.IsScanned ? quadrant.ScanCode : "???")
+                            </div>
+                        }
+                    </div>
+                    <div class="mt-2 lcars-text" style="font-size: 11px;">
+                        <div class="flex justify-between">
+                            <span>Current: @RecordResult.CurrentPosition.ToDisplayString()</span>
+                            <span style="color: var(--lcars-red);">Red = Klingons</span>
+                            <span style="color: var(--lcars-green);">Green = Starbase</span>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <p class="lcars-text">@RecordResult?.Message</p>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public bool IsVisible { get; set; }
+    [Parameter] public EventCallback<bool> IsVisibleChanged { get; set; }
+    [Parameter] public GalacticRecordResult? RecordResult { get; set; }
+
+    private bool IsCurrent(QuadrantScanData data)
+    {
+        return RecordResult != null && data.Position.Equals(RecordResult.CurrentPosition);
+    }
+
+    private string GetColor(QuadrantScanData data)
+    {
+        if (!data.IsScanned)
+            return "#666";
+
+        if (RecordResult != null && data.Position.Equals(RecordResult.CurrentPosition))
+            return "cyan";
+
+        if (data.KlingonCount > 0)
+            return "var(--lcars-red)";
+
+        if (data.HasStarbase)
+            return "var(--lcars-green)";
+
+        return "white";
+    }
+
+    private async Task Close()
+    {
+        IsVisible = false;
+        await IsVisibleChanged.InvokeAsync(false);
+    }
+}

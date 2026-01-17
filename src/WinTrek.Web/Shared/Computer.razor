@@ -1,0 +1,15 @@
+@* Computer Panel - Computer functions *@
+
+<LcarsGroupBox Header="COMPUTER">
+    <div class="button-stack">
+        <LcarsButton OnClick="OnGalacticRecord" Style="LcarsButton.ButtonStyle.Secondary">GALACTIC RECORD</LcarsButton>
+        <LcarsButton OnClick="OnStatusReport" Style="LcarsButton.ButtonStyle.Secondary">STATUS REPORT</LcarsButton>
+        <LcarsButton OnClick="OnTorpedoCalc" Style="LcarsButton.ButtonStyle.Secondary">TORPEDO CALC</LcarsButton>
+    </div>
+</LcarsGroupBox>
+
+@code {
+    [Parameter] public EventCallback OnGalacticRecord { get; set; }
+    [Parameter] public EventCallback OnStatusReport { get; set; }
+    [Parameter] public EventCallback OnTorpedoCalc { get; set; }
+}

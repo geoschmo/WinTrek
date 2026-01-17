@@ -1,0 +1,68 @@
+@* Long Range Scan Dialog - 3x3 adjacent quadrants display *@
+
+@if (IsVisible)
+{
+    <div class="dialog-overlay" @onclick="Close">
+        <div class="dialog-content" @onclick:stopPropagation="true" style="min-width: 350px;">
+            <div class="dialog-header">
+                <span>LONG RANGE SCAN</span>
+                <button class="dialog-close" @onclick="Close">&times;</button>
+            </div>
+            <div class="dialog-body">
+                @if (ScanResult?.Success == true)
+                {
+                    <div class="lrs-grid">
+                        @foreach (var quadrant in ScanResult.ScannedQuadrants)
+                        {
+                            <div class="lrs-cell @(IsCurrent(quadrant) ? "current" : "")" style="color: @GetColor(quadrant)">
+                                <div>@(quadrant.IsValid ? quadrant.ScanCode : "***")</div>
+                                <div style="font-size: 10px; color: #888;">@(quadrant.IsValid ? quadrant.Position.ToDisplayString() : "---")</div>
+                            </div>
+                        }
+                    </div>
+                    <div class="mt-2 text-center lcars-text" style="font-size: 11px;">
+                        Format: Klingons / Starbases / Stars
+                    </div>
+                }
+                else
+                {
+                    <p class="lcars-text">@ScanResult?.Message</p>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public bool IsVisible { get; set; }
+    [Parameter] public EventCallback<bool> IsVisibleChanged { get; set; }
+    [Parameter] public LongRangeScanResult? ScanResult { get; set; }
+
+    private bool IsCurrent(QuadrantScanData data)
+    {
+        return ScanResult != null && data.IsValid && data.Position.Equals(ScanResult.CenterPosition);
+    }
+
+    private string GetColor(QuadrantScanData data)
+    {
+        if (!data.IsValid)
+            return "#666";
+
+        if (ScanResult != null && data.Position.Equals(ScanResult.CenterPosition))
+            return "cyan";
+
+        if (data.KlingonCount > 0)
+            return "var(--lcars-red)";
+
+        if (data.HasStarbase)
+            return "var(--lcars-green)";
+
+        return "white";
+    }
+
+    private async Task Close()
+    {
+        IsVisible = false;
+        await IsVisibleChanged.InvokeAsync(false);
+    }
+}

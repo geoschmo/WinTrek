@@ -1,0 +1,27 @@
+@* Communications Panel - message log *@
+
+<LcarsGroupBox Header="COMMUNICATIONS">
+    <div class="communications-list">
+        @foreach (var message in Messages)
+        {
+            <div class="comm-message @GetMessageClass(message.Type)">
+                @message.Text
+            </div>
+        }
+    </div>
+</LcarsGroupBox>
+
+@code {
+    [Parameter]
+    public IReadOnlyList<GameMessage> Messages { get; set; } = Array.Empty<GameMessage>();
+
+    private string GetMessageClass(WinTrek.Core.Events.MessageType type) => type switch
+    {
+        WinTrek.Core.Events.MessageType.Warning => "message-warning",
+        WinTrek.Core.Events.MessageType.Alert => "message-alert",
+        WinTrek.Core.Events.MessageType.Success => "message-success",
+        WinTrek.Core.Events.MessageType.Damage => "message-damage",
+        WinTrek.Core.Events.MessageType.System => "message-system",
+        _ => "message-info"
+    };
+}

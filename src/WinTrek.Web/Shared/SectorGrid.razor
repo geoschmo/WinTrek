@@ -1,0 +1,45 @@
+@* Sector Grid - 8x8 short-range scan display *@
+
+<LcarsGroupBox Header="SHORT RANGE SCAN">
+    <div class="sector-grid">
+        @for (int y = 0; y < 8; y++)
+        {
+            @for (int x = 0; x < 8; x++)
+            {
+                var cell = Grid[y, x];
+                <div class="sector-cell @GetCellClass(cell.Content)">
+                    @cell.Symbol
+                </div>
+            }
+        }
+    </div>
+</LcarsGroupBox>
+
+@code {
+    [Parameter]
+    public SectorCell[,] Grid { get; set; } = new SectorCell[8, 8];
+
+    protected override void OnInitialized()
+    {
+        // Initialize with empty cells if not provided
+        if (Grid[0, 0] == null)
+        {
+            for (int y = 0; y < 8; y++)
+            {
+                for (int x = 0; x < 8; x++)
+                {
+                    Grid[y, x] = new SectorCell { X = x, Y = y, Content = SectorContent.Empty };
+                }
+            }
+        }
+    }
+
+    private string GetCellClass(SectorContent content) => content switch
+    {
+        SectorContent.Enterprise => "enterprise",
+        SectorContent.Klingon => "klingon",
+        SectorContent.Star => "star",
+        SectorContent.Starbase => "starbase",
+        _ => "empty"
+    };
+}

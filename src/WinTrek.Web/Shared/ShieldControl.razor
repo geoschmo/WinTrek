@@ -1,0 +1,42 @@
+@* Shield Control Panel *@
+
+<LcarsGroupBox Header="SHIELD CONTROL">
+    <div class="shield-controls">
+        <div class="nav-row">
+            <span class="lcars-label" style="width: 70px;">ENERGY:</span>
+            <LcarsTextBox Value="@TransferAmount" ValueChanged="OnTransferAmountChanged" Width="50" />
+        </div>
+        <div class="shield-buttons">
+            <LcarsButton OnClick="HandleAdd" Style="LcarsButton.ButtonStyle.Primary">ADD</LcarsButton>
+            <LcarsButton OnClick="HandleRemove" Style="LcarsButton.ButtonStyle.Secondary">REMOVE</LcarsButton>
+        </div>
+    </div>
+</LcarsGroupBox>
+
+@code {
+    [Parameter] public string TransferAmount { get; set; } = "100";
+    [Parameter] public EventCallback<string> TransferAmountChanged { get; set; }
+    [Parameter] public EventCallback<int> OnTransfer { get; set; }
+
+    private async Task OnTransferAmountChanged(string value)
+    {
+        TransferAmount = value;
+        await TransferAmountChanged.InvokeAsync(value);
+    }
+
+    private async Task HandleAdd()
+    {
+        if (int.TryParse(TransferAmount, out int amount))
+        {
+            await OnTransfer.InvokeAsync(amount);
+        }
+    }
+
+    private async Task HandleRemove()
+    {
+        if (int.TryParse(TransferAmount, out int amount))
+        {
+            await OnTransfer.InvokeAsync(-amount);
+        }
+    }
+}

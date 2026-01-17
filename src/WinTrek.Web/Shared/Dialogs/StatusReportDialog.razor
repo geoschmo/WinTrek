@@ -1,0 +1,75 @@
+@* Status Report Dialog - System damage status *@
+
+@if (IsVisible)
+{
+    <div class="dialog-overlay" @onclick="Close">
+        <div class="dialog-content" @onclick:stopPropagation="true" style="min-width: 400px;">
+            <div class="dialog-header">
+                <span>STATUS REPORT</span>
+                <button class="dialog-close" @onclick="Close">&times;</button>
+            </div>
+            <div class="dialog-body">
+                @if (StatusResult != null)
+                {
+                    <div class="mb-2">
+                        @foreach (var system in StatusResult.Systems)
+                        {
+                            <div class="status-row">
+                                <span class="lcars-label">@system.Name</span>
+                                <span class="@GetStatusClass(system)">
+                                    @(system.IsOperational ? "OK" : "DAMAGED")
+                                    @if (system.DamageLevel > 0)
+                                    {
+                                        <span style="font-size: 10px; margin-left: 5px;">(@CalculateHealth(system.DamageLevel)%)</span>
+                                    }
+                                </span>
+                            </div>
+                        }
+                    </div>
+                    <div class="lcars-text mt-2" style="font-size: 12px; border-top: 1px solid var(--lcars-purple); padding-top: 8px;">
+                        @GetDamageSummary()
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public bool IsVisible { get; set; }
+    [Parameter] public EventCallback<bool> IsVisibleChanged { get; set; }
+    [Parameter] public SystemStatusResult? StatusResult { get; set; }
+
+    private string GetStatusClass(SystemStatus system)
+    {
+        if (system.IsOperational && system.DamageLevel <= 0)
+            return "status-ok";
+        if (system.IsOperational && system.DamageLevel > 0)
+            return "status-warning";
+        return "status-damaged";
+    }
+
+    private int CalculateHealth(int damageLevel)
+    {
+        if (damageLevel <= 0)
+            return 100;
+        return Math.Max(0, 100 - (damageLevel * 2));
+    }
+
+    private string GetDamageSummary()
+    {
+        if (StatusResult == null)
+            return "";
+
+        var damagedCount = StatusResult.Systems.Count(s => !s.IsOperational);
+        return damagedCount == 0
+            ? "All systems operational."
+            : $"{damagedCount} system(s) require repair. Dock at starbase to repair.";
+    }
+
+    private async Task Close()
+    {
+        IsVisible = false;
+        await IsVisibleChanged.InvokeAsync(false);
+    }
+}

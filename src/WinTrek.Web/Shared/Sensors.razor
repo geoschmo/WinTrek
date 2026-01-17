@@ -1,0 +1,13 @@
+@* Sensors Panel - Scan buttons *@
+
+<LcarsGroupBox Header="SENSORS">
+    <div class="button-stack">
+        <LcarsButton OnClick="OnShortRangeScan" Style="LcarsButton.ButtonStyle.Primary">SHORT RANGE SCAN</LcarsButton>
+        <LcarsButton OnClick="OnLongRangeScan" Style="LcarsButton.ButtonStyle.Primary">LONG RANGE SCAN</LcarsButton>
+    </div>
+</LcarsGroupBox>
+
+@code {
+    [Parameter] public EventCallback OnShortRangeScan { get; set; }
+    [Parameter] public EventCallback OnLongRangeScan { get; set; }
+}
