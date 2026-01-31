@@ -20,6 +20,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UsePathBase("/wintrek");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseAntiforgery();
