@@ -28,11 +28,14 @@ jobs:
       - name: Publish
         run: dotnet publish src/WinTrek.Web/WinTrek.Web.csproj --configuration Release --output ./publish --no-build
 
-      - name: Deploy via Web Deploy
-        uses: talunzhang/auto-web-deploy@v1.0.1
-        with:
-          website-name: ${{ secrets.WEBSITE_NAME }}
-          server-computer-name: ${{ secrets.SERVER_COMPUTER_NAME }}
-          server-username: ${{ secrets.SERVER_USERNAME }}
-          server-password: ${{ secrets.SERVER_PASSWORD }}
-          source-path: 'publish\'
+      - name: Deploy to SmarterASP virtual app
+        shell: powershell
+        run: |
+          $msdeploy = "C:\Program Files\IIS\Microsoft Web Deploy V3\msdeploy.exe"
+
+          & $msdeploy `
+            -verb:sync `
+            -source:contentPath="${{ github.workspace }}\publish" `
+            -dest:contentPath="${{ secrets.WEBSITE_NAME }}/wintrek",computerName="${{ secrets.SERVER_COMPUTER_NAME }}",userName="${{ secrets.MSDEPLOY_USER }}",password="${{ secrets.MSDEPLOY_PASS }}",authType="Basic" `
+            -allowUntrusted `
+            -enableRule:AppOffline
