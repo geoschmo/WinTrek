@@ -36,6 +36,6 @@ jobs:
           & $msdeploy `
             -verb:sync `
             -source:contentPath="${{ github.workspace }}\publish" `
-            -dest:contentPath="${{ secrets.WEBSITE_NAME }}/wintrek",computerName="${{ secrets.SERVER_COMPUTER_NAME }}",userName="${{ secrets.MSDEPLOY_USER }}",password="${{ secrets.MSDEPLOY_PASS }}",authType="Basic" `
+            -dest:contentPath="${{ secrets.WEBSITE_NAME }}/wintrek",computerName="${{ secrets.SERVER_COMPUTER_NAME }}",userName="${{ secrets.SERVER_USERNAME }}",password="${{ secrets.SERVER_PASSWORD }}",authType="Basic" `
             -allowUntrusted `
             -enableRule:AppOffline
