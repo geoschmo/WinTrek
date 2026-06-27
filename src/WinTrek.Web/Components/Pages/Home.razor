@@ -27,6 +27,9 @@
                     <button @onclick="ShowAbout">About</button>
                 </div>
             </div>
+            <div class="lcars-menu-item">
+                <button class="lcars-menu-btn" @onclick="ShowCredits">CREDITS</button>
+            </div>
         </div>
     </div>
     <div class="lcars-header-accent"></div>
@@ -110,6 +113,7 @@
     StatusResult="_statusResult" />
 
 <AboutDialog @bind-IsVisible="_showAbout" />
+<CreditsDialog @bind-IsVisible="_showCredits" />
 
 <!-- Game Over Overlay -->
 @if (!string.IsNullOrEmpty(_gameOverMessage))
@@ -136,6 +140,7 @@
     private bool _showGalacticRecord;
     private bool _showStatusReport;
     private bool _showAbout;
+    private bool _showCredits;
     private LongRangeScanResult? _longRangeScanResult;
     private GalacticRecordResult? _galacticRecordResult;
     private SystemStatusResult? _statusResult;
@@ -255,6 +260,11 @@
     private void ShowAbout()
     {
         _showAbout = true;
+    }
+
+    private void ShowCredits()
+    {
+        _showCredits = true;
     }
 
     public void Dispose()

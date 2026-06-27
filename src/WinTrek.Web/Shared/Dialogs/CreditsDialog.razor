@@ -1,0 +1,72 @@
+@* Credits Dialog - README history, acknowledgments, and license *@
+
+@if (IsVisible)
+{
+    <div class="dialog-overlay" @onclick="Close">
+        <div class="dialog-content" @onclick:stopPropagation="true" style="width: min(760px, 92vw);">
+            <div class="dialog-header">
+                <span>CREDITS</span>
+                <button class="dialog-close" @onclick="Close">&times;</button>
+            </div>
+            <div class="dialog-body credits-dialog-body">
+                <section class="credits-section">
+                    <div class="lcars-header">History</div>
+
+                    <div class="lcars-label">The Original Star Trek (1971)</div>
+                    <p class="lcars-text-light">
+                        The first Star Trek computer game was written by Mike Mayfield in 1971 on a SDS Sigma 7 mainframe at the University of California, Irvine. Inspired by the original Star Trek television series, Mayfield created a text-based tactical game where players commanded the Enterprise through a galaxy filled with Klingon warships.
+                    </p>
+                    <p class="lcars-text-light">
+                        The game spread rapidly through the early computing community, being ported to countless systems including HP BASIC, various mainframes, and early microcomputers. Its simple yet engaging gameplay made it one of the most widely ported games of the 1970s.
+                    </p>
+
+                    <div class="lcars-label">Super Star Trek (1978)</div>
+                    <p class="lcars-text-light">
+                        In 1978, David Ahl and Bob Leedom published an enhanced BASIC version called "Super Star Trek" in <em>BASIC Computer Games</em>, one of the first million-selling computer books. This version added named quadrants based on Star Trek lore, more sophisticated combat mechanics, starbase docking and resupply, equipment damage and repair, and the iconic sector display format.
+                    </p>
+                    <p class="lcars-text-light">
+                        Super Star Trek became the definitive version, spawning countless adaptations and inspiring generations of programmers to create their own versions.
+                    </p>
+
+                    <div class="lcars-label">DOS Era and Beyond</div>
+                    <p class="lcars-text-light">
+                        Throughout the 1980s and 1990s, Star Trek text games continued to evolve on DOS and early Windows systems. Many programmers, learning to code, created their own interpretations, adding graphics, sound, and new features while maintaining the core strategic gameplay.
+                    </p>
+
+                    <div class="lcars-label">WinTrek</div>
+                    <p class="lcars-text-light">
+                        This project modernizes a personal DOS-era Star Trek implementation, preserving the classic gameplay while updating it with a retro style graphical interface. The LCARS visual style connects this remake to the broader Star Trek universe while honoring the text-based roots of the original.
+                    </p>
+                </section>
+
+                <section class="credits-section">
+                    <div class="lcars-header">Acknowledgments</div>
+                    <ul class="credits-list">
+                        <li><strong>Mike Mayfield</strong> - Creator of the original Star Trek game (1971)</li>
+                        <li><strong>David Ahl &amp; Bob Leedom</strong> - Super Star Trek (1978)</li>
+                        <li><strong>Gene Roddenberry</strong> - Creator of Star Trek</li>
+                        <li><strong>Michael Okuda</strong> - Designer of the LCARS interface for Star Trek: TNG</li>
+                    </ul>
+                </section>
+
+                <section class="credits-section">
+                    <div class="lcars-header">License</div>
+                    <p class="lcars-text-light">
+                        This is a fan project created for educational purposes. Star Trek and related marks are trademarks of Paramount Pictures / CBS Studios.
+                    </p>
+                </section>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public bool IsVisible { get; set; }
+    [Parameter] public EventCallback<bool> IsVisibleChanged { get; set; }
+
+    private async Task Close()
+    {
+        IsVisible = false;
+        await IsVisibleChanged.InvokeAsync(false);
+    }
+}
