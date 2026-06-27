@@ -38,4 +38,6 @@ jobs:
             -source:contentPath="${{ github.workspace }}\publish" `
             -dest:contentPath="${{ secrets.WEBSITE_NAME }}/wintrek",computerName="${{ secrets.SERVER_COMPUTER_NAME }}",userName="${{ secrets.SERVER_USERNAME }}",password="${{ secrets.SERVER_PASSWORD }}",authType="Basic" `
             -allowUntrusted `
+            -skip:objectName=dirPath,absolutePath=".*\\logs($|\\.*)" `
+            -skip:objectName=filePath,absolutePath=".*\\logs\\.*" `
             -enableRule:AppOffline
