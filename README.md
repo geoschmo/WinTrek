@@ -2,6 +2,10 @@
 
 A remake of the classic Star Trek text-based strategy game, built with WPF and .NET 8. Features an LCARS-inspired interface paying homage to Star Trek: The Next Generation's iconic computer displays.
 
+## Play Online
+
+🎮 **Play WinTrek:** [Launch the game](https://georgeperley.com/wintrek)
+
 ![WinTrek Screenshot](docs/images/wintrek-screenshot.png)
 
 ## About the Game
